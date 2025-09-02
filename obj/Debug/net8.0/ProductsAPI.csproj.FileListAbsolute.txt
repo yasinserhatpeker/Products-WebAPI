@@ -31,3 +31,4 @@
 /Users/yasinpeker/Desktop/ProductsAPI/obj/Debug/net8.0/ProductsAPI.pdb
 /Users/yasinpeker/Desktop/ProductsAPI/obj/Debug/net8.0/ProductsAPI.genruntimeconfig.cache
 /Users/yasinpeker/Desktop/ProductsAPI/obj/Debug/net8.0/ref/ProductsAPI.dll
+/Users/yasinpeker/Desktop/ProductsAPI/obj/Debug/net8.0/ProductsAPI.sourcelink.json
