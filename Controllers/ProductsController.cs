@@ -10,11 +10,11 @@ namespace ProductsAPI.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ProductsContext _context;
-        
+
 
         public ProductsController(ProductsContext context)
         {
-             _context = context;
+            _context = context;
         }
 
         [HttpGet]
@@ -27,7 +27,7 @@ namespace ProductsAPI.Controllers
             }
             return Ok(products);
 
-         }
+        }
 
         [HttpGet("{id}")]
 
@@ -44,7 +44,15 @@ namespace ProductsAPI.Controllers
             }
             return Ok(product);
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(Product entity)
+        {
+            await _context.Products.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            
+            return CreatedAtAction(nameof(GetProduct),new {id=entity.ProductId},entity);
+        }
 
     }
 }
