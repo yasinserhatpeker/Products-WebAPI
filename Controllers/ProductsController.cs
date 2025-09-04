@@ -27,7 +27,7 @@ namespace ProductsAPI.Controllers
             return _products ?? new List<Product>();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("api/[controller]/{id}")]
 
         public Product GetProduct(int id)
         {
