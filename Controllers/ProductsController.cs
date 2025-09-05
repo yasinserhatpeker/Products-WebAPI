@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductsAPI.Models;
@@ -83,6 +84,33 @@ namespace ProductsAPI.Controllers
             return NoContent();
 
         }
-       
+
+        [HttpDelete("{id}")]
+
+        public async Task<IActionResult> DeleteProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+            _context.Products.Remove(product);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
     }
 }
