@@ -55,9 +55,14 @@ namespace ProductsAPI.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
             if (result.Succeeded)
             {
-                return Ok(new { token = "token" });
+                return Ok(new { token = GenerateJWT(user) });
             }
             return Unauthorized();
+        }
+
+        private object GenerateJWT(AppUser user)
+        {
+           
         }
     }
 }
