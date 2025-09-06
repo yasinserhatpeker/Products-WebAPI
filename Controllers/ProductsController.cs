@@ -31,7 +31,7 @@ namespace ProductsAPI.Controllers
             return Ok(products);
 
         }
-
+        [Authorize]
         [HttpGet("{id}")]
 
         public async Task<IActionResult> GetProduct(int? id)
@@ -86,7 +86,7 @@ namespace ProductsAPI.Controllers
             return NoContent();
 
         }
-        [Authorize]
+     
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeleteProduct(int? id)
