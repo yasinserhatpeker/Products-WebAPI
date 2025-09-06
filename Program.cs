@@ -7,13 +7,15 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProductsAPI.Models;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(MyAllowSpecificOrigins, policy =>
+    options.AddPolicy(MyAllowSpecificOrigins,
+    policy =>
     {
         policy.WithOrigins("http://127.0.0.1:5500")
         .AllowAnyHeader()
@@ -21,7 +23,14 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddDbContext<ProductsContext>(x => x.UseSqlite("Data Source =productsDb"));
+
+builder.Services.AddDbContext<ProductsContext>(ConfigureDbContext);
+
+void ConfigureDbContext(DbContextOptionsBuilder options)
+{
+    options.UseSqlite("Data Source=productsDb");
+}
+
 builder.Services.AddIdentity<AppUser,AppRole>().AddEntityFrameworkStores<ProductsContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -100,9 +109,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseRouting();
-app.UseCors(MyAllowSpecificOrigins); 
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthorization();
-
-
 app.MapControllers();
+
 app.Run();
