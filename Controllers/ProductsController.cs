@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductsAPI.DTO;
@@ -85,7 +86,7 @@ namespace ProductsAPI.Controllers
             return NoContent();
 
         }
-
+        [Authorize]
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeleteProduct(int? id)

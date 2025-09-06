@@ -1,6 +1,9 @@
 using System.IO.Compression;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ProductsAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,13 +23,36 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.MaxFailedAccessAttempts = 3;
 });
 
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidIssuer = "",
+        ValidateAudience = false,
+        ValidAudience = "",
+        ValidAudiences = new string[] { "a", "b" },
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("AppSettings:Secret").Value ?? "")),
+        ValidateLifetime=true,
+        
+    };
+});
+
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
